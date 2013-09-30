@@ -36,7 +36,27 @@ public class CombineControl : MonoBehaviour {
 
     void Update()
     {
-        frontWheelTransform.Rotate( 0, 0, -frontWheel.rpm / 60F * 360F * Time.deltaTime);
-        rearWheelTransform.Rotate( 0, 0, -rearWheel.rpm / 60F * 360F * Time.deltaTime);
+        manageSuspensionAndRotation(frontWheel, frontWheelTransform);
+        manageSuspensionAndRotation(rearWheel, rearWheelTransform);
     }
+
+    void manageSuspensionAndRotation(WheelCollider collider, Transform transform)
+    {
+        transform.Rotate(0, 0, -collider.rpm / 60F * 360F * Time.deltaTime);
+
+        RaycastHit hit;
+
+        Vector3 colliderCenter = collider.transform.TransformPoint(collider.center);
+        Vector3 colliderDirection = collider.transform.TransformDirection(-collider.transform.up);
+
+        if (Physics.Raycast(colliderCenter, colliderDirection, out hit, collider.suspensionDistance + collider.radius))
+        {
+            transform.position = hit.point - colliderDirection * collider.radius;
+        }
+        else
+        {
+            transform.position = colliderCenter - collider.transform.up * collider.suspensionDistance;
+        }
+    }
+
 }
