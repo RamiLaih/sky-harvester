@@ -8,7 +8,8 @@ public class CombineControl : MonoBehaviour {
     public Transform frontWheelTransform;
     public Transform rearWheelTransform;
 
-	public float maxTorque = 50F;
+	public float rearTorque = 50F;
+    public float frontTorque = 50F;
 
 	// Use this for initialization
 	void Start () {
@@ -17,15 +18,16 @@ public class CombineControl : MonoBehaviour {
 	
 	// Update is called once per frame
 	void FixedUpdate () {
+
         if (Input.GetKey(KeyCode.DownArrow))
         {
-            rearWheel.motorTorque = -maxTorque;
-            frontWheel.motorTorque = -maxTorque;
+            rearWheel.motorTorque = -rearTorque;
+            frontWheel.motorTorque = -frontTorque;
         }
 		else if (Input.GetKey(KeyCode.UpArrow))
         {
-            rearWheel.motorTorque = maxTorque;
-            frontWheel.motorTorque = maxTorque;
+            rearWheel.motorTorque = rearTorque;
+            frontWheel.motorTorque = frontTorque;
         }
 		else {
 			rearWheel.motorTorque = 0;
